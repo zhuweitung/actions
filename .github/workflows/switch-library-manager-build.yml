@@ -32,15 +32,9 @@ jobs:
 
         # 只编译windows版本
       - name: Update bundler.json environments
-        uses: jossef/action-set-json-field@v1
-        with:
-          file: bundler.json
-          field: environments
-          value: [{"arch": "amd64", "os": "windows"}]
-          parse_json: true
-
-      - name: Output bundler.json
-        run: cat bundler.json
+        run: |
+          sudo apt-get install jq
+          jq '.environments = [{"arch": "amd64", "os": "windows"}]' bundler.json
 
         # 编译
       - name: Build
