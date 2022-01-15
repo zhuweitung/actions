@@ -36,7 +36,8 @@ jobs:
         with:
           file: bundler.json
           field: environments
-          value: "[{'arch': 'amd64', 'os': 'windows}]"
+          value: [{"arch": "amd64", "os": "windows"}]
+          parse_json: true
 
       - name: Output bundler.json
         run: cat bundler.json
