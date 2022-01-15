@@ -1,0 +1,46 @@
+# 编译switch-library-manager
+name: switch-library-manager-build-build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install and setup Go
+        uses: actions/setup-go@v2
+          with:
+            go-version: '1.15.15'
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: giwty/switch-library-manager
+
+        # 安装编译所需依赖
+      - name: Get the bundler and install bundler
+        run: |
+          go get -u github.com/asticode/go-astilectron-bundler/...
+          go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
+          mv $HOME/go/bin/astilectron-bundler .
+
+        # 替换raw.githubusercontent.com地址为国内能快速访问的镜像地址
+      - name: Change raw url
+        run: sed -i 's/raw.githubusercontent.com\/\(.*\)\/\(.*\)\/\(.*\)\/\(.*\)/cdn.jsdelivr.net\/gh\/\1\/\2@\3\/\4/g' `grep -rl raw.githubusercontent.com ./`
+
+        # 只编译windows版本
+      - name: Update bundler.json environments
+        uses: jossef/action-set-json-field@v1
+        with:
+          file: bundler.json
+          field: environments
+          value: [{"arch": "amd64", "os": "windows"}]
+
+        # 编译
+      - name: Build
+        run: |
+          go env -w GO111MODULE=on
+          go mod download
+          ./astilectron-bundler
