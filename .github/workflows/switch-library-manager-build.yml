@@ -34,7 +34,8 @@ jobs:
       - name: Update bundler.json environments
         run: |
           sudo apt-get install jq
-          jq '.environments = [{"arch": "amd64", "os": "windows"}]' bundler.json
+          jq '.environments = [{"arch": "amd64", "os": "windows"}]' bundler.json > new-bundler.json
+          mv new-bundler.json bundler.json
           cat bundler.json
 
         # 编译
