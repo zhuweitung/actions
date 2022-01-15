@@ -37,7 +37,7 @@ jobs:
 
       - name: Set version
         id: version
-        run: echo "::set-output name=version::$(grep ^APP_VERSION Makefile | sed -r 's/APP_VERSION := (.*)/\1/g')"
+        run: echo "::set-output name=version::$(grep ^APP_VERSION Makefile | sed -r 's/APP_VERSION\s*:=\s*(.*)/\1/g')"
 
       - name: Release
         uses: ncipollo/release-action@v1
