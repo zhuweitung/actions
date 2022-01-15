@@ -36,7 +36,10 @@ jobs:
         with:
           file: bundler.json
           field: environments
-          value: '[{"arch": "amd64", "os": "windows"}]'
+          value: "[{'arch': 'amd64', 'os': 'windows}]"
+
+      - name: Output bundler.json
+        run: cat bundler.json
 
         # 编译
       - name: Build
