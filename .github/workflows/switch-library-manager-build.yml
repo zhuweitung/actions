@@ -44,3 +44,18 @@ jobs:
           go env -w GO111MODULE=on
           go mod download
           ./astilectron-bundler
+
+        # 以编译日期作为版本号
+      - name: Set version
+        id: version
+        run: echo "::set-output name=version::$(date +%Y.%m.%d)"
+
+        # 发布
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: SLM-v${{steps.version.outputs.version}}
+          name: SLM-v${{steps.version.outputs.version}}
+          body: Github Action auto build.
+          artifacts: output/windows-amd64/Switch-Library-Manager.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
