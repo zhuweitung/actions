@@ -7,5 +7,6 @@
 
 ### 自动构建Switch-Library-Manager.exe
 具体action内容查看[switch-library-manager-build.yml](./.github/workflows/switch-library-manager-build.yml)
+
 与原版的区别：
 + 将原版中到`raw.githubusercontent.com`的请求全都改为镜像地址`cdn.jsdelivr.net/gh`，加快国内访问
