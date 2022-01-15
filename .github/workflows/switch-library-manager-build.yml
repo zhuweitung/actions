@@ -11,8 +11,8 @@ jobs:
     steps:
       - name: Install and setup Go
         uses: actions/setup-go@v2
-          with:
-            go-version: '1.15.15'
+        with:
+          go-version: '1.15.15'
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
         with:
           file: bundler.json
           field: environments
-          value: [{"arch": "amd64", "os": "windows"}]
+          value: '[{"arch": "amd64", "os": "windows"}]'
 
         # 编译
       - name: Build
