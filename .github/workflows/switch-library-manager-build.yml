@@ -1,5 +1,5 @@
 # 编译switch-library-manager
-name: switch-library-manager-build-build
+name: switch-library-manager-build
 
 on:
   workflow_dispatch:
