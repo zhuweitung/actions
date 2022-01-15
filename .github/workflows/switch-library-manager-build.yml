@@ -35,6 +35,7 @@ jobs:
         run: |
           sudo apt-get install jq
           jq '.environments = [{"arch": "amd64", "os": "windows"}]' bundler.json
+          cat bundler.json
 
         # 编译
       - name: Build
