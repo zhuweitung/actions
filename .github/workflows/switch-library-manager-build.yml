@@ -45,10 +45,10 @@ jobs:
           go mod download
           ./astilectron-bundler
 
-        # 以编译日期作为版本号
+        # 读取slm.json中的版本号
       - name: Set version
         id: version
-        run: echo "::set-output name=version::$(date +%Y.%m.%d)"
+        run: echo "::set-output name=version::$(jq .version slm.json | sed -r 's/"(.*)"/\1/g')"
 
         # 发布
       - name: Release
