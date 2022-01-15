@@ -1,0 +1,49 @@
+# 编译JKSV master分支
+name: JKSV-build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download devkitpro-pacman.deb
+        run: wget -P /opt/ https://github.com/devkitPro/pacman/releases/download/v1.0.2/devkitpro-pacman.amd64.deb
+
+      - name: Install devkitPro
+        run: |
+          sudo apt-get install -y gdebi-core
+          sudo dpkg -i /opt/devkitpro-pacman.amd64.deb
+
+      - name: Install switch-dev
+        run: sudo dkp-pacman -S switch-dev --noconfirm
+
+      - name: Install other libs
+        run: sudo dkp-pacman -S switch-curl switch-freetype switch-libjpeg-turbo switch-libjson-c switch-libpng switch-libwebp switch-sdl2 switch-sdl2_gfx switch-sdl2_image switch-zlib --noconfirm
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: J-D-K/JKSV
+
+      - name: Build
+        run: |
+          export DEVKITPRO=/opt/devkitpro
+          export DEVKITARM=/opt/devkitpro/devkitARM
+          export DEVKITPPC=/opt/devkitpro/devkitPPC
+          make
+
+      - name: Set version
+        id: version
+        run: echo "::set-output name=version::$(grep ^APP_VERSION Makefile | sed -r 's/APP_VERSION := (.*)/\1/g')"
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: JKSV-v${{steps.version.outputs.version}}
+          name: JKSV-v${{steps.version.outputs.version}}
+          body: Github Action auto build.
+          artifacts: JKSV.nro
+          token: ${{ secrets.GITHUB_TOKEN }}
