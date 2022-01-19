@@ -7,6 +7,11 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    
+    env:
+      MARKTEXT_IS_STABLE: 1
+      MARKTEXT_EXIT_ON_ERROR: 1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
         # 拉取仓库
@@ -78,7 +83,7 @@ jobs:
         id: version
         run: |
           apt install -y jq
-          echo "::set-output name=version::$(jq .version package.json | sed -r 's/"(.*)"/\1_ec/g')"
+          echo "::set-output name=version::$(jq .version package.json | sed -r 's/"(.*)"/\1_alpha/g')"
           echo "::set-output name=buildtime::$(date +%Y.%m.%d)"
 
         # 发布
