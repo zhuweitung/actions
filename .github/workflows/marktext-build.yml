@@ -64,7 +64,9 @@ jobs:
 
         # 构建
       - name: Build
-        run: yarn build:bin && ls -l build
+        run: |
+          yarn build:bin
+          Dir ${{ github.workspace }}\build
 
       #   # 设置版本号
       # - name: Set version
