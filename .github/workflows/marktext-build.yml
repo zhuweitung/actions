@@ -82,16 +82,17 @@ jobs:
       - name: Set version
         id: version
         run: |
-          apt install -y jq
-          echo "::set-output name=version::$(jq .version package.json | sed -r 's/"(.*)"/\1_alpha/g')"
-          echo "::set-output name=buildtime::$(date +%Y.%m.%d)"
+          $version=((Get-Content "package.json") | ConvertFrom-Json).version
+          echo "version=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $buildtime=(Get-Date).ToString('yyyy.MM.dd')
+          echo "buildtime=$buildtime" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
         # 发布
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          tag: marktext-v${{steps.version.outputs.version}}.${{steps.version.outputs.buildtime}}
-          name: marktext-v${{steps.version.outputs.version}}.${{steps.version.outputs.buildtime}}
+          tag: marktext-v${{ env.version }}_alpha.${{ env.buildtime }}
+          name: marktext-v${{ env.version }}_alpha.${{ env.buildtime }}
           body: Github Action auto build.
           artifacts: build\marktext-setup.exe
           token: ${{ secrets.GITHUB_TOKEN }}
