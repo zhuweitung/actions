@@ -63,24 +63,30 @@ jobs:
         run: yarn install --check-files --frozen-lockfile
 
         # 构建
-      - name: Build
+      - name: Build and release
         run: |
-          yarn build:bin
-          tree ${{ github.workspace }}\build
+          yarn run release:win --publish always
 
-      #   # 设置版本号
-      # - name: Set version
-      #   id: version
-      #   run: |
-      #     apt install -y jq
-      #     echo "::set-output name=version::$(jq .version package.json | sed -r 's/"(.*)"/\1-ec/g')"
+      - name: Calculate checksums
+        run: |
+          get-filehash -Algorithm SHA256 "build\marktext-setup.exe"
+          get-filehash -Algorithm SHA256 "build\marktext-*-win.zip"
+        shell: pwsh
 
-      #   # 发布
-      # - name: Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     tag: marktext-v${{steps.version.outputs.version}}
-      #     name: marktext-v${{steps.version.outputs.version}}
-      #     body: Github Action auto build.
-      #     artifacts: output/
-      #     token: ${{ secrets.GITHUB_TOKEN }}
+        # 设置版本号
+      - name: Set version
+        id: version
+        run: |
+          apt install -y jq
+          echo "::set-output name=version::$(jq .version package.json | sed -r 's/"(.*)"/\1_ec/g')"
+          echo "::set-output name=buildtime::$(date +%Y.%m.%d)"
+
+        # 发布
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: marktext-v${{steps.version.outputs.version}}.${{steps.version.outputs.buildtime}}
+          name: marktext-v${{steps.version.outputs.version}}.${{steps.version.outputs.buildtime}}
+          body: Github Action auto build.
+          artifacts: build\marktext-setup.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
