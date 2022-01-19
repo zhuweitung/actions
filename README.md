@@ -10,3 +10,6 @@
 
 与原版的区别：
 + 将原版中到`raw.githubusercontent.com`的请求全都改为镜像地址`cdn.jsdelivr.net/gh`，加快国内访问
+
+### 自动构建marktext-setup.exe
+具体action内容查看[marktext-build.yml](./.github/workflows/marktext-build.yml)
