@@ -13,3 +13,7 @@
 
 ### 自动构建marktext-setup.exe
 具体action内容查看[marktext-build.yml](./.github/workflows/marktext-build.yml)
+
+### 构建huginn-arm镜像
+具体action内容查看[huginn-arm-build.yml](./.github/workflows/huginn-arm-build.yml)
+代码来自[unixfox](https://github.com/huginn/huginn/issues/2648#issuecomment-1010069873)
