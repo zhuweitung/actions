@@ -14,3 +14,6 @@
 ### 自动构建marktext-setup.exe
 具体action内容查看[marktext-build.yml](./.github/workflows/marktext-build.yml)
 
+### 构建changedetection.io
+具体action内容查看[changedetection-build.yml](./.github/workflows/changedetection-build.yml)
+
