@@ -28,7 +28,7 @@ jobs:
         run: echo "::set-output name=version::$(grep ^__version__ changedetectionio/__init__.py | sed -r 's/__version__\s*=\s*\x27(.*)\x27/\1/g')"
 
       - name: Set hosted_sticky false
-        run: sed -i 's/hosted_sticky=.*/hosted_sticky=False/g' changedetectionio/__init__.py
+        run: sed -i 's/hosted_sticky=.*/hosted_sticky=False,/g' changedetectionio/__init__.py
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
